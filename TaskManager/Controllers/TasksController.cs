@@ -16,6 +16,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<TaskItem>), StatusCodes.Status200OK)]
     public IActionResult GetAll()
     {
         var tasks = _taskService.GetAllTasks();
@@ -23,6 +24,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(TaskItem), StatusCodes.Status200OK)]
     public IActionResult GetById(string id)
     {
         var task = _taskService.GetTaskById(id);
@@ -32,6 +34,8 @@ public class TasksController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(TaskItem), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult Create([FromBody] TaskItem task)
     {
         try
@@ -46,6 +50,9 @@ public class TasksController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(typeof(TaskItem), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult Update(string id, [FromBody] TaskItem task)
     {
         try
@@ -64,6 +71,8 @@ public class TasksController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult Delete(string id)
     {
         try
